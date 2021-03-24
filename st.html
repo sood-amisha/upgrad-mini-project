@@ -1,0 +1,146 @@
+<html>
+<head>
+</head>
+<body>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script> 
+    <style>
+    body{
+        font-weight: 800;
+    }
+    .row{
+        margin: 10%;
+    }
+    .card{
+        padding: 5%;
+        background-color: blueviolet;
+    }
+    .hidden {
+        display: none;
+    }
+ 
+    .result {
+        max-width: 100%;
+    }
+    .block { 
+        display: table-cell;
+        vertical-align: middle;
+    }
+    label{
+        width: 15%;
+        float: left;
+        text-align: right;
+    }
+    input{
+        width: 75%;
+        margin-left: 5%;
+        float: left;
+    }
+    .btn-warning{
+        width: 50%;
+    }
+    .heading{
+        text-align: center;
+        font-size: medium;
+    }
+    </style>
+    <br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="card card-body">
+                <div class="heading">Details Form</div><hr><br>
+                <div class="block">
+                    <label>Name :</label>
+                    <input  placeholder="Name" type="text" id="test-name">
+                    </div><br>
+                    <div class="block">
+                    <label>Mob. No. :</label>
+                    <input  placeholder="Number" type="tel" id="test-number"></div><br>
+                    <div class="block">
+                    <label>Email :</label>
+                    <input  placeholder="Email" type="email" id="test-email" ></div><br>
+                    <div class="text-center">
+                    <button class="btn btn-sm btn-warning" id="create-test"><b>Submit</b></button>
+                    </div>
+                    <hr>
+                    </div>
+                    <table class="table">
+                        <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Number</th>
+                        <th scope="col">Email</th>
+                    </tr>
+                    <tbody id="tests-table"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+ 
+ var newId = 4
+ var newTest = { 'name': null, 'id': newId, 'number': null, 'email':null }
+
+
+ $('#test-number').on('keyup', function () {
+     newTest.number = $(this).val()
+     console.log(newTest)
+ })
+
+ $('#test-name').on('change', function () {
+     newTest.name = $(this).val()
+     console.log(newTest)
+ })
+ $('#test-email').on('change', function () {
+     newTest.email = $(this).val()
+     console.log(newTest)
+ })
+
+ $('#create-test').on('click', function () {
+     if(newTest.name.length<3){
+         alert('Check the Name')
+     }
+     else if(newTest.number.length!=10){
+        alert('Check the Number')
+     }
+     else if(!newTest.email.includes('@gmail.com','@hotmail.com') && !newTest.email.includes('@hotmail.com')){
+         alert('Check the email')
+     }
+   else if (newTest.name == null || newTest.email == null || newTest.number == null) {
+            alert('Warning Empty fields')
+        } else {
+         addRow(newTest)
+         $('#test-name').val('')
+         $('#test-email').val('')
+         $('#test-number').val('')
+     }
+    }
+ )
+
+ function addRow(obj) {
+      var row = `<tr scope="row" class="test-row-${obj.id}">
+                     <td>${obj.name}</td>
+                     <td>${obj.number}</td>
+                     <td>${obj.email}</td>
+                     <td id="result-${obj.id}" data-testid="${obj.id}""></td>
+                     <td>
+                       <button class="btn btn-sm btn-warning" data-testid=${obj.id} id="delete-${obj.id}">Delete</button>
+ 
+                     </td>
+                 </tr>`
+      $('#tests-table').append(row)
+ 
+      $(`#delete-${obj.id}`).on('click', deleteTest)
+  }
+
+  function deleteTest() {
+       var testid = $(this).data('testid')
+       var deleteBtn = $(`#delete-${testid}`)
+       var row = $(`.test-row-${testid}`)
+       row.remove()
+
+   }
+</script>
+</body>
+</html>
